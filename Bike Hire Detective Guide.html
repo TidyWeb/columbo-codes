@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A beginner's detective guide to planning multipart Python decisions before writing code.">
+  <title>The Riverside Bike Hire Case — A Detective's Method</title>
+  <link rel="stylesheet" href="assets/bike-hire-detective-guide/styles.css?v=20260717-173959">
+</head>
+<body>
+<header class="hero">
+  <a class="columbo-home" href="index.html" aria-label="Return to the Columbo Codes home page">
+    <img class="columbo-watermark" src="assets/bike-hire-detective-guide/columbo-watermark.png" alt="">
+  </a>
+  <div class="shell hero-grid">
+    <div class="hero-space" aria-hidden="true"></div>
+    <div class="hero-copy">
+      <div class="eyebrow">Columbo Codes · Case File 02</div>
+      <h1>The Riverside <em>Bike Hire Case</em></h1>
+      <p class="dek">How to recognise an override, select the normal price, and apply a later discount without tying the logic in knots.</p>
+      <p class="hero-note">The brief arrives in two messages. Columbo’s method is simple: hear the whole story, sort the clues by job, and only then decide what must happen first.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="case-nav" aria-label="Guide sections">
+  <div class="shell">
+    <a href="#scene">The scene</a>
+    <a href="#route">Whole route</a>
+    <a href="#facts">Four facts</a>
+    <a href="#roles">Three jobs</a>
+    <a href="#order">Decision order</a>
+    <a href="#handoff">Price handoff</a>
+    <a href="#silhouette">Code silhouette</a>
+    <a href="#method">Reuse the method</a>
+  </div>
+</nav>
+
+<main>
+  <section class="section" id="scene">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">00 / Hear the whole story</div>
+        <div>
+          <h2>The manager remembers one more thing</h2>
+          <p class="lead">You are building the pricing logic for a bike-hire kiosk beside the river. The manager gives you the brief in two messages, an hour apart.</p>
+        </div>
+      </div>
+
+      <div class="messages">
+        <article class="message">
+          <span class="message-number">Message 01</span>
+          <p>Standard full-day hire is €15. If it is raining, the price falls to €10. On a public holiday, the price rises to €20 regardless of the weather.</p>
+        </article>
+        <article class="message sting">
+          <span class="message-number">Message 02 · just one more thing</span>
+          <p>Loyalty Card holders receive 15% off whatever they would normally pay. A child’s bike is always €5—regardless of the day, weather or membership.</p>
+        </article>
+      </div>
+
+      <div class="scene-summary">
+        <strong>Two messages. Four changing facts. One final price.</strong>
+        <p>The late message is not an inconvenience to bolt onto finished code. It is evidence that must be understood before the decision structure is built.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="route">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">01 / Survey the case</div>
+        <div>
+          <h2>See the whole route before opening any branch</h2>
+          <p class="lead">There are three major parts. They are unequal: identifying the override and establishing the normal price contain most of the reasoning; the eligible discount is a smaller finishing operation.</p>
+        </div>
+      </div>
+
+      <div class="journey" aria-label="Whole bike-hire pricing journey">
+        <article>
+          <span class="part">Part A · Evidence</span>
+          <strong>Collect and classify the facts</strong>
+          <small>Which fact overrides, which facts select, and which fact modifies?</small>
+        </article>
+        <div class="journey-arrow" aria-hidden="true">››</div>
+        <article>
+          <span class="part">Part B · Price Finder</span>
+          <strong>Establish one hire price</strong>
+          <small>Take the override route or determine the normal price.</small>
+        </article>
+        <div class="journey-arrow" aria-hidden="true">››</div>
+        <article>
+          <span class="part">Part C · Eligible Discount</span>
+          <strong>Apply the modifier once</strong>
+          <small>Only normal adult hires continue to the loyalty decision.</small>
+        </article>
+      </div>
+
+      <div class="investigator-question">Which clue must be checked before the normal price rules are even allowed to speak?<small>The question that controls the whole case</small></div>
+    </div>
+  </section>
+
+  <section class="section" id="facts">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">02 / List the evidence</div>
+        <div>
+          <h2>Pull out the four facts that can change the answer</h2>
+          <p class="lead">Each fact is Boolean: it has exactly two states. Naming both states makes the pieces visible before we decide how they interact.</p>
+        </div>
+      </div>
+
+      <div class="facts-wrap" role="region" aria-label="Four changing bike-hire facts" tabindex="0">
+        <table>
+          <thead>
+            <tr><th>Clue</th><th>Question</th><th>States</th><th>Job—not yet classified</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><b>01</b> Child’s bike</td><td>Is this a child’s bike?</td><td>Yes / No <span class="boolean">Boolean</span></td><td>May end the pricing investigation immediately.</td></tr>
+            <tr><td><b>02</b> Public holiday</td><td>Is today a public holiday?</td><td>Yes / No <span class="boolean">Boolean</span></td><td>May determine the normal starting price.</td></tr>
+            <tr><td><b>03</b> Rain</td><td>Is it raining?</td><td>Yes / No <span class="boolean">Boolean</span></td><td>May determine the normal starting price.</td></tr>
+            <tr><td><b>04</b> Loyalty Card</td><td>Does the customer have a Loyalty Card?</td><td>Yes / No <span class="boolean">Boolean</span></td><td>May change an eligible price afterwards.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="code-tip">
+        <span>Code Tip</span>
+        <p>Four changing facts means four answers must exist somewhere. If an early draft gathers only two answers, it cannot possibly represent the full brief.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="roles">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">03 / Classify the clues</div>
+        <div>
+          <h2>Not every fact does the same kind of work</h2>
+          <p class="lead">The original two labels are not enough. This case contains an override, selectors and a modifier. The difference determines where each question belongs.</p>
+        </div>
+      </div>
+
+      <div class="role-grid">
+        <article class="role-card override">
+          <div class="shape" aria-hidden="true">!</div>
+          <span class="role-name">Override</span>
+          <h3>Child’s bike</h3>
+          <p>Replaces every normal pricing rule. The result is €5, even on a holiday and even for a Loyalty Card holder.</p>
+          <strong>Ask first. If yes, the pricing case is closed.</strong>
+        </article>
+        <article class="role-card selector">
+          <div class="shape diamond" aria-hidden="true"></div>
+          <span class="role-name">Selectors</span>
+          <h3>Public holiday and rain</h3>
+          <p>Choose which normal starting price applies. Holiday has priority over rain because the brief says holiday pricing applies regardless of weather.</p>
+          <strong>Ask only when the override did not apply.</strong>
+        </article>
+        <article class="role-card modifier">
+          <div class="shape square" aria-hidden="true"></div>
+          <span class="role-name">Modifier</span>
+          <h3>Loyalty Card</h3>
+          <p>Does not choose a normal starting price. It adjusts an eligible normal price after the selectors have finished.</p>
+          <strong>Apply once, after the normal routes rejoin.</strong>
+        </article>
+      </div>
+
+      <div class="classification-test">
+        <strong>Columbo’s three-question test</strong>
+        <ol>
+          <li>Does this fact cancel the ordinary rules? <b>Override.</b></li>
+          <li>Does it determine which ordinary result applies? <b>Selector.</b></li>
+          <li>Does it adjust an eligible result afterwards? <b>Modifier.</b></li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="order">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">04 / Establish precedence</div>
+        <div>
+          <h2>Decision order is part of the evidence</h2>
+          <p class="lead">The questions cannot be arranged by taste. Words such as “always” and “regardless” tell us which rules outrank the others.</p>
+        </div>
+      </div>
+
+      <div class="precedence" aria-label="Bike-hire decision order">
+        <div class="decision override-decision"><span>1</span><strong>Child’s bike?</strong><small>Yes → €5 final price. Stop.</small></div>
+        <div class="down" aria-hidden="true">↓ No</div>
+        <div class="decision"><span>2</span><strong>Public holiday?</strong><small>Yes → normal price €20.</small></div>
+        <div class="down" aria-hidden="true">↓ No</div>
+        <div class="decision"><span>3</span><strong>Raining?</strong><small>Yes → €10. No → €15.</small></div>
+        <div class="down" aria-hidden="true">↓ Normal routes rejoin</div>
+        <div class="decision modifier-decision"><span>4</span><strong>Loyalty Card?</strong><small>Yes → reduce eligible price by 15%. No → leave it unchanged.</small></div>
+      </div>
+
+      <div class="why-order">
+        <article><span class="part">Why holiday precedes rain</span><p>A rainy public holiday is still €20. Checking rain first could incorrectly settle on €10 before the stronger holiday rule is considered.</p></article>
+        <article><span class="part">Why loyalty comes last</span><p>The same discount calculation can act on €10, €15 or €20. Repeating it inside all three routes would create unnecessary work.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="handoff">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">05 / Follow the price</div>
+        <div>
+          <h2>One value travels, but not every route visits every stage</h2>
+          <p class="lead">The normal price routes all establish the same carried value. The override also establishes that value—but sends it directly to the final answer, bypassing the loyalty stage.</p>
+        </div>
+      </div>
+
+      <div class="handoff-map">
+        <div class="handoff-row override-row">
+          <article><span class="part">Override route</span><strong>Child’s bike</strong></article>
+          <div class="arrow" aria-hidden="true">››</div>
+          <article class="value-box"><span class="part">Carried value</span><code>hire_price = €5</code></article>
+          <div class="arrow" aria-hidden="true">››</div>
+          <article class="final-box"><span class="part">Final result</span><strong>No discount stage</strong></article>
+        </div>
+        <div class="handoff-row">
+          <article><span class="part">Normal routes</span><strong>€20, €10 or €15</strong></article>
+          <div class="arrow" aria-hidden="true">››</div>
+          <article class="value-box"><span class="part">Carried value</span><code>hire_price</code></article>
+          <div class="arrow" aria-hidden="true">››</div>
+          <article class="final-box"><span class="part">Eligible modifier</span><strong>Discount or unchanged</strong></article>
+        </div>
+      </div>
+
+      <p class="handoff-explanation">The loyalty decision does not need to remember whether rain or a holiday produced the normal price. It only needs the eligible value now held in <code>hire_price</code>. The child route is different because the brief explicitly closes that route at €5.</p>
+    </div>
+  </section>
+
+  <section class="section" id="silhouette">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">06 / See the code silhouette</div>
+        <div>
+          <h2>Recognise the shape before writing runnable Python</h2>
+          <p class="lead">This outline exposes nesting, precedence and the bypass without giving you a completed solution.</p>
+        </div>
+      </div>
+
+      <div class="skeleton">
+        <div class="legend"><span><b>◆</b> decision</span><span><b>■</b> carried value</span><span><b>!</b> override</span><span><b>▸</b> route or action</span></div>
+        <ul class="tree" aria-label="Non-runnable Python decision silhouette">
+          <li><span class="node value">collect the four Boolean answers</span></li>
+          <li>
+            <span class="node override-node">if — child-bike override?</span>
+            <ul>
+              <li><span class="node route">establish the flat hire_price</span></li>
+              <li><span class="node route">continue directly to the final result</span></li>
+            </ul>
+          </li>
+          <li>
+            <span class="node decision">else — enter normal pricing</span>
+            <ul>
+              <li><span class="node decision">if — public holiday?</span></li>
+              <li><span class="node decision">elif — raining?</span></li>
+              <li><span class="node decision">else — standard day</span></li>
+              <li><span class="node value">normal routes rejoin with hire_price known</span></li>
+              <li>
+                <span class="node decision">if — Loyalty Card?</span>
+                <ul><li><span class="node route">apply the discount once</span></li></ul>
+              </li>
+            </ul>
+          </li>
+          <li><span class="node route final-node">present the final hire_price</span></li>
+        </ul>
+      </div>
+
+      <div class="code-tip">
+        <span>Code Tip</span>
+        <p>Indentation tells you which instructions belong to each question. Returning to an earlier left edge tells you that the indented block has finished. Remaining indented inside the normal-pricing <code>else</code> keeps the Loyalty Card decision away from the child-bike override.</p>
+      </div>
+
+      <div class="coding-overview">
+        <div class="overview-head">
+          <span class="overview-label">Coding Overview</span>
+          <h3>One decision chain runs from top to bottom</h3>
+          <p>An <code>if / elif / else</code> chain is one complete decision unit. Python tests its conditions in order and takes the first route whose condition is true.</p>
+        </div>
+
+        <div class="chain-steps" aria-label="How Python evaluates one if elif else chain">
+          <article>
+            <span class="chain-number">01</span>
+            <strong>Ask the first question</strong>
+            <p>If it is true, run its indented block and skip the rest of this chain.</p>
+          </article>
+          <article>
+            <span class="chain-number">02</span>
+            <strong>Only after false, ask the next</strong>
+            <p>An <code>elif</code> is evaluated only when every earlier condition in the same chain was false.</p>
+          </article>
+          <article>
+            <span class="chain-number">03</span>
+            <strong>Use the fallback if nothing matched</strong>
+            <p><code>else</code> asks no question. It catches the remaining case after all earlier conditions were false.</p>
+          </article>
+        </div>
+
+        <div class="chain-demo">
+          <div class="chain-code" aria-label="A non-runnable if elif else silhouette">
+            <div><b>if</b> strongest rule?</div>
+            <div class="indent">run this block</div>
+            <div><b>elif</b> next rule?</div>
+            <div class="indent">run this block</div>
+            <div><b>else</b></div>
+            <div class="indent">run the fallback</div>
+          </div>
+          <div class="chain-reading">
+            <span class="part">Read it aloud</span>
+            <p>“Try the strongest rule. If that did not match, try the next rule. If neither matched, use the remaining answer.”</p>
+            <strong>Only one branch in this chain can run.</strong>
+          </div>
+        </div>
+
+        <div class="process-compare">
+          <article>
+            <span class="part">Same unit · first match wins</span>
+            <h4><code>if / elif / else</code></h4>
+            <p>The aligned branch words belong to one chain. After one condition is true, the remaining branches become irrelevant and are skipped.</p>
+          </article>
+          <article>
+            <span class="part">New unit · checked independently</span>
+            <h4>A separate <code>if</code></h4>
+            <p>A new <code>if</code> begins another decision process. Python checks it even if an earlier, separate <code>if</code> already ran.</p>
+          </article>
+        </div>
+
+        <div class="precision-note">
+          <strong>One careful correction:</strong>
+          <p>Python does not somehow know which questions are true in advance. It evaluates the first condition. If that is false, it evaluates the next. It stops evaluating that chain as soon as it finds the first true condition.</p>
+        </div>
+
+        <div class="case-application">
+          <span class="part">Apply that to this case</span>
+          <p>The child-bike question forms the outer decision. Its <code>else</code> opens the normal-pricing world. Inside that world, holiday comes before rain because holiday has the wider effect: when holiday is true, rain no longer matters. Ordering the questions is therefore part of designing the program—not merely tidying the code afterwards.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="method">
+    <div class="shell">
+      <div class="section-head">
+        <div class="kicker">07 / Keep the habit</div>
+        <h2>A detective’s method for the next multipart problem</h2>
+      </div>
+
+      <ol class="planning-sheet">
+        <li><strong>Hear the whole story.</strong><span>Do later instructions alter, override or add to the earlier rules?</span></li>
+        <li><strong>Name the final result.</strong><span>What single value must the program eventually produce?</span></li>
+        <li><strong>List every changing fact.</strong><span>How many states does each fact have, and must the program ask for it?</span></li>
+        <li><strong>Classify each fact.</strong><span>Is it an override, selector or modifier?</span></li>
+        <li><strong>Read for precedence words.</strong><span>Do “always,” “unless,” “regardless” or “only” reveal which rule outranks another?</span></li>
+        <li><strong>Find the carried value.</strong><span>Which result must survive long enough to reach a later operation?</span></li>
+        <li><strong>Mark where routes rejoin or bypass.</strong><span>Does every route visit the next stage, or does an override leave early?</span></li>
+        <li><strong>Write the logic in plain English.</strong><span>Can every sentence make sense without mentally running the entire program?</span></li>
+        <li><strong>Sketch the silhouette.</strong><span>Show the nested shape before adding runnable expressions and calculations.</span></li>
+        <li><strong>Translate carefully.</strong><span>Now let Python describe a decision structure you already understand.</span></li>
+      </ol>
+
+      <blockquote class="closing-quote">The clever part is not writing more branches. It is noticing which questions never needed to be asked on the same route.<small>Case closed—until the manager remembers something else&nbsp;&nbsp;😂</small></blockquote>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="shell footer-grid">
+    <div>
+      <span class="part">Beginner’s Programming Field Guide</span>
+      <p>The Riverside Bike Hire Case · designed for step-by-step reasoning before Python.</p>
+      <p>This independent companion guide supports learning alongside Code Institute study. It is not official Code Institute material.</p>
+    </div>
+    <a class="tidyweb" href="https://github.com/TidyWeb/" target="_blank" rel="noopener">
+      <img src="assets/bike-hire-detective-guide/tidyweb_logo.png" width="44" height="44" alt="TidyWeb logo">
+      <span>© 2026 TidyWeb<br>GitHub</span>
+    </a>
+  </div>
+</footer>
+</body>
+</html>

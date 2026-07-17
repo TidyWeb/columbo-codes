@@ -81,7 +81,7 @@ body.afg-page {
   border-left:5px solid var(--case-amber);
   color:var(--case-muted);
 }
-.columbo-mark {
+.columbo-home {
   position:absolute;
   z-index:1;
   top:-6%;
@@ -89,9 +89,16 @@ body.afg-page {
   width:min(48vw,610px);
   opacity:.15;
   transform:rotate(5deg);
+}
+.columbo-mark {
+  display:block;
+  width:100%;
   filter:sepia(.25) contrast(1.04);
-  pointer-events:none;
   user-select:none;
+}
+.columbo-home:focus-visible {
+  outline:3px solid var(--case-amber);
+  outline-offset:5px;
 }
 .case-nav {
   position:sticky;
@@ -621,7 +628,7 @@ body.afg-page {
 @media (max-width:820px) {
   .case-hero { min-height:auto; }
   .hero-copy { padding:70px 0 58px; }
-  .columbo-mark {
+  .columbo-home {
     top:0;
     right:-18%;
     width:78vw;
@@ -678,7 +685,7 @@ body.afg-page {
   .case-nav { display:none; }
   .case-hero { min-height:auto; }
   .case-section { padding:44px 0; }
-  .columbo-mark { opacity:.08; }
+  .columbo-home { opacity:.08; }
   .journey-card,
   .brief-card,
   .story-panel,
