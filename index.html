@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Putting It All Together Like Columbo Would</title>
+<style>
+:root {
+  --ink:#202124;
+  --muted:#5f6368;
+  --line:#dde2e8;
+  --paper:#fffdfa;
+  --blue:#1f4f82;
+  --blue-soft:#eef4fa;
+  --plum:#7d4655;
+  --plum-soft:#f5eeef;
+  --green:#4d6b4f;
+  --green-soft:#f0f5f0;
+  --orange:#9a5b34;
+  --orange-soft:#f7eee6;
+}
+
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0;
+  background:#eceff3;
+  color:var(--ink);
+  font-family:"IBM Plex Sans", system-ui, sans-serif;
+}
+.page {
+  width:min(920px, 100%);
+  margin:0 auto 60px;
+  padding:72px 92px 88px;
+  background:var(--paper);
+  box-shadow:0 8px 32px rgba(0,0,0,.14);
+}
+h1, h2, h3 { color:var(--blue); }
+h1 {
+  margin:0 0 18px;
+  font-size:36px;
+  line-height:1.18;
+  font-weight:600;
+}
+h2 {
+  margin:58px 0 20px;
+  font-size:24px;
+  line-height:1.3;
+  font-weight:500;
+}
+h3 {
+  margin:36px 0 14px;
+  font-size:18px;
+  line-height:1.35;
+  font-weight:600;
+}
+p, li {
+  font-size:17px;
+  line-height:1.8;
+}
+p { margin:0 0 22px; }
+strong { font-weight:600; }
+.subtitle {
+  margin:0 0 46px;
+  padding-bottom:24px;
+  border-bottom:1px solid var(--line);
+  color:var(--muted);
+  font-size:16px;
+  line-height:1.65;
+}
+.eyebrow {
+  margin:0 0 10px;
+  color:var(--plum);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.09em;
+  text-transform:uppercase;
+}
+.story {
+  margin:0 0 34px;
+  padding:24px 28px;
+  border-left:4px solid var(--blue);
+  border-radius:0 8px 8px 0;
+  background:var(--blue-soft);
+}
+.story p {
+  margin:0 0 8px;
+  font-size:17px;
+  line-height:1.65;
+}
+.story p:last-child { margin-bottom:0; }
+.brief {
+  margin:26px 0 38px;
+  padding:2px 0 2px 24px;
+  border-left:2px solid var(--line);
+}
+.brief h3 { margin-top:0; }
+.brief ul {
+  margin:0;
+  padding-left:22px;
+}
+.brief li { margin-bottom:8px; }
+.question {
+  margin:30px 0;
+  padding:20px 24px;
+  background:var(--orange-soft);
+  border-left:4px solid var(--orange);
+  font-size:19px;
+  line-height:1.55;
+  font-weight:600;
+}
+.journey {
+  display:grid;
+  grid-template-columns:1fr 42px 1fr 42px 1fr;
+  align-items:center;
+  margin:30px 0 42px;
+}
+.journey-step {
+  min-height:126px;
+  padding:20px;
+  border-top:3px solid var(--blue);
+  background:var(--blue-soft);
+}
+.journey-step span,
+.stage-label {
+  display:block;
+  margin-bottom:9px;
+  color:var(--blue);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.journey-step strong {
+  display:block;
+  margin-bottom:8px;
+  font-size:18px;
+  line-height:1.35;
+}
+.journey-step small {
+  color:var(--muted);
+  font-size:14px;
+  line-height:1.5;
+}
+.arrow {
+  color:var(--blue);
+  text-align:center;
+  font-size:26px;
+}
+.stage {
+  margin:34px 0 48px;
+  padding-top:28px;
+  border-top:2px solid var(--blue-soft);
+}
+.stage h3 { margin-top:0; }
+.plain-list {
+  margin:18px 0 28px;
+  padding-left:24px;
+}
+.plain-list li { margin-bottom:12px; }
+.variable-sheet {
+  width:100%;
+  margin:26px 0 34px;
+  border-collapse:collapse;
+  font-size:16px;
+}
+.variable-sheet th {
+  padding:0 16px 12px 0;
+  border-bottom:2px solid var(--blue);
+  color:var(--blue);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-align:left;
+  text-transform:uppercase;
+}
+.variable-sheet td {
+  padding:15px 16px 15px 0;
+  border-bottom:1px solid var(--line);
+  line-height:1.55;
+  vertical-align:top;
+}
+.variable-name {
+  color:var(--plum);
+  font-family:"IBM Plex Mono", monospace;
+  font-weight:600;
+  white-space:nowrap;
+}
+.carrier {
+  display:grid;
+  grid-template-columns:1fr 180px 1fr;
+  align-items:center;
+  gap:20px;
+  margin:30px 0 42px;
+}
+.carrier-side {
+  color:var(--muted);
+  font-size:15px;
+  line-height:1.55;
+}
+.carrier-box {
+  padding:22px 14px;
+  border:2px solid var(--plum);
+  border-radius:8px;
+  background:var(--plum-soft);
+  text-align:center;
+}
+.carrier-box strong {
+  display:block;
+  color:var(--plum);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:15px;
+}
+.carrier-box small {
+  display:block;
+  margin-top:8px;
+  color:var(--muted);
+  line-height:1.4;
+}
+.decision-map {
+  margin:30px 0 42px;
+  padding:28px;
+  border:1px solid var(--line);
+  background:#fff;
+}
+.decision-root {
+  width:min(420px, 100%);
+  margin:0 auto;
+  padding:17px 20px;
+  border:2px solid var(--blue);
+  background:var(--blue-soft);
+  text-align:center;
+  font-size:18px;
+  font-weight:600;
+}
+.trunk {
+  width:2px;
+  height:28px;
+  margin:0 auto;
+  background:var(--blue);
+}
+.branches {
+  position:relative;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:44px;
+  padding-top:28px;
+}
+.branches::before {
+  content:"";
+  position:absolute;
+  top:0;
+  left:25%;
+  right:25%;
+  height:2px;
+  background:var(--blue);
+}
+.branch {
+  position:relative;
+  padding:20px;
+  border-top:3px solid var(--plum);
+  background:var(--plum-soft);
+}
+.branch::before {
+  content:"";
+  position:absolute;
+  top:-30px;
+  left:50%;
+  width:2px;
+  height:28px;
+  background:var(--blue);
+}
+.branch h3 {
+  margin:0 0 14px;
+  color:var(--plum);
+  text-decoration:none;
+}
+.branch ol {
+  margin:0;
+  padding-left:22px;
+}
+.branch li {
+  margin-bottom:10px;
+  font-size:15.5px;
+  line-height:1.55;
+}
+.rejoin {
+  margin:26px auto 0;
+  width:min(500px, 100%);
+  padding:18px 22px;
+  border-left:4px solid var(--green);
+  background:var(--green-soft);
+  text-align:center;
+  font-size:16px;
+  line-height:1.55;
+}
+.two-part {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:24px;
+  margin:26px 0 40px;
+}
+.two-part section {
+  padding:22px 24px;
+  border-top:3px solid var(--blue);
+  background:var(--blue-soft);
+}
+.two-part section:last-child {
+  border-color:var(--green);
+  background:var(--green-soft);
+}
+.two-part h3 { margin:0 0 12px; }
+.two-part p { margin:0; font-size:15.5px; line-height:1.65; }
+.rule {
+  margin:30px 0;
+  padding:20px 24px;
+  border-left:4px solid var(--green);
+  background:var(--green-soft);
+  font-size:18px;
+  line-height:1.65;
+}
+.planning-sheet {
+  margin:26px 0 0;
+  padding:0;
+  counter-reset:planning;
+  list-style:none;
+}
+.planning-sheet li {
+  position:relative;
+  margin:0;
+  padding:18px 16px 18px 62px;
+  border-top:1px solid var(--line);
+}
+.planning-sheet li:last-child { border-bottom:1px solid var(--line); }
+.planning-sheet li::before {
+  counter-increment:planning;
+  content:counter(planning, decimal-leading-zero);
+  position:absolute;
+  top:19px;
+  left:8px;
+  color:var(--blue);
+  font-family:"IBM Plex Mono", monospace;
+  font-size:13px;
+  font-weight:600;
+}
+.planning-sheet strong { display:block; margin-bottom:3px; }
+.planning-sheet span { color:var(--muted); font-size:15px; line-height:1.55; }
+.closing {
+  margin-top:54px;
+  padding-top:28px;
+  border-top:2px solid var(--blue);
+  color:var(--blue);
+  font-size:21px;
+  font-weight:600;
+  line-height:1.55;
+}
+footer {
+  margin-top:56px;
+  padding-top:20px;
+  border-top:1px solid var(--line);
+  color:var(--muted);
+  font-size:13px;
+  line-height:1.6;
+  text-align:center;
+}
+
+@media (max-width:760px) {
+  .page { padding:48px 26px 64px; box-shadow:none; }
+  h1 { font-size:31px; }
+  h2 { margin-top:48px; }
+  .journey { grid-template-columns:1fr; gap:0; }
+  .journey-step { min-height:auto; }
+  .arrow { padding:8px 0; transform:rotate(90deg); }
+  .carrier { grid-template-columns:1fr; text-align:center; }
+  .branches { grid-template-columns:1fr; gap:26px; padding-top:0; }
+  .branches::before, .branch::before, .trunk { display:none; }
+  .two-part { grid-template-columns:1fr; }
+  .decision-map { padding:20px 16px; }
+  .variable-sheet { display:block; overflow-x:auto; }
+}
+
+@media print {
+  body { background:#fff; }
+  .page { width:100%; margin:0; padding:28px 34px; box-shadow:none; }
+  .decision-map, .story, .journey-step, .branch, .two-part section {
+    print-color-adjust:exact;
+    -webkit-print-color-adjust:exact;
+  }
+}
+</style>
+<link rel="stylesheet" href="assets/putting-it-all-together/styles.css?v=20260717-153907">
+</head>
+<body class="afg-page">
+<header class="case-hero" id="top">
+  <div class="case-shell">
+    <img class="columbo-mark" src="assets/putting-it-all-together/columbo-quartertone.png" alt="" aria-hidden="true">
+    <div class="hero-copy">
+      <div class="case-label">A beginner’s field guide · thinking before typing</div>
+      <h1>Putting It All Together <em>Like Columbo Would</em></h1>
+      <p class="hero-dek">How to investigate a multipart programming problem, find the first question, and follow one important value from the opening clues to the final answer.</p>
+      <p class="hero-aside">Columbo never begins with the clever conclusion. He notices the facts, asks which question comes first, and keeps following the thread until every loose end belongs somewhere.</p>
+    </div>
+  </div>
+</header>
+
+<nav class="case-nav" aria-label="Guide sections">
+  <div class="case-shell">
+    <a href="#scene">The scene</a>
+    <a href="#whole-route">Whole route</a>
+    <a href="#facts">Changing facts</a>
+    <a href="#handoff">Value handoff</a>
+    <a href="#first-question">First question</a>
+    <a href="#build-order">Build order</a>
+    <a href="#silhouette">Code silhouette</a>
+    <a href="#planning-sheet">Planning sheet</a>
+  </div>
+</nav>
+
+<main>
+  <section class="case-section" id="scene">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">00 / Set the scene</div>
+        <h2>First, enter the world of the problem</h2>
+      </div>
+      <div class="scene">
+        <div class="story-panel" aria-label="Parcel delivery story">
+          <p>Maya runs the counter at a neighbourhood parcel shop.</p>
+          <p>Customers choose either standard delivery or express delivery.</p>
+          <p>The parcel’s weight determines the charge within that service.</p>
+          <p>Rewards members receive a discount after the basic charge has been found.</p>
+          <p>Maya needs one final amount to appear on the till.</p>
+        </div>
+        <aside class="case-note">
+          <strong>The program is simply a careful version of Maya’s thought process.</strong>
+          <small>Scene first · machinery later</small>
+        </aside>
+      </div>
+
+      <div class="brief-grid">
+        <article class="brief-card part-a">
+          <span class="part-mark">Part A · Basic Charge Finder</span>
+          <h3>Determine the basic delivery charge</h3>
+          <ul>
+            <li>Express: £8 under 2 kg, £12 from 2 kg to under 10 kg, £18 at 10 kg or more.</li>
+            <li>Standard: £3 under 2 kg, £6 from 2 kg to under 10 kg, £9 at 10 kg or more.</li>
+          </ul>
+        </article>
+        <article class="brief-card part-b">
+          <span class="part-mark">Part B · Discount Calculator</span>
+          <h3>Apply the rewards discount</h3>
+          <p>Members receive 15% off. Everyone else keeps the basic charge unchanged.</p>
+        </article>
+      </div>
+      <div class="honest-note"><strong>Let’s be honest about the workload:</strong> Part A is the meat of the project. Part B is a smaller finishing operation once Part A reliably hands it one basic charge.</div>
+    </div>
+  </section>
+
+  <section class="case-section" id="whole-route">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">01 / Survey the case</div>
+        <div>
+          <h2>See the whole journey before examining the details</h2>
+          <div class="code-tip">
+            <span class="code-tip-label">Code Tip</span>
+            <p class="lead">Do not begin by worrying about indentation, or commas, or bracket types. Begin by seeing the flow: collect the facts, determine one matching charge, then apply one later membership decision.</p>
+          </div>
+        </div>
+      </div>
+      <div class="journey" aria-label="Overall program journey">
+        <div class="journey-card">
+          <span class="part-mark">Inputs</span>
+          <strong>Collect the facts</strong>
+          <small>Delivery type, parcel weight and membership.</small>
+        </div>
+        <div class="journey-arrow" aria-hidden="true">››</div>
+        <div class="journey-card part-a">
+          <span class="part-mark">Part A</span>
+          <strong>Determine the matching basic charge</strong>
+          <small>No charge is “best.” The customer’s facts determine which of the six charges applies.</small>
+        </div>
+        <div class="journey-arrow" aria-hidden="true">››</div>
+        <div class="journey-card part-b">
+          <span class="part-mark">Part B</span>
+          <strong>Run the Discount Calculator</strong>
+          <small>Use the charge Part A has already produced.</small>
+        </div>
+      </div>
+      <div class="investigator-question">What has to be known first—and what value must survive long enough to reach the second part?<small>Columbo’s governing question</small></div>
+    </div>
+  </section>
+
+  <section class="case-section" id="facts">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">02 / List the clues</div>
+        <div>
+          <h2>Pull out the facts that can change the answer</h2>
+          <p class="lead">Read once for the story. Read again to mark every fact that can vary for the next customer. Then count and name its possible states so no branch remains hidden.</p>
+        </div>
+      </div>
+      <div class="facts-wrap" role="region" aria-label="Changing facts and possible pathways" tabindex="0">
+        <table class="facts-table">
+          <thead>
+            <tr>
+              <th>Clue</th>
+              <th>Changing fact</th>
+              <th>Question Maya asks</th>
+              <th>How many?</th>
+              <th>Possibilities</th>
+              <th>Job in the task</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="fact-id">01</td>
+              <td class="fact-name">Delivery type</td>
+              <td>Which service did the customer choose?</td>
+              <td><span class="path-count">×2</span></td>
+              <td>Express; standard</td>
+              <td>Selects the correct price list.</td>
+            </tr>
+            <tr>
+              <td class="fact-id">02</td>
+              <td class="fact-name">Parcel weight</td>
+              <td>Which weight band contains this parcel?</td>
+              <td><span class="path-count">×3</span></td>
+              <td>Under 2 kg; 2 kg to under 10 kg; 10 kg or more</td>
+              <td>Determines one charge within the selected list.</td>
+            </tr>
+            <tr>
+              <td class="fact-id">03</td>
+              <td class="fact-name">Membership</td>
+              <td>Is the customer a rewards member?</td>
+              <td><span class="path-count">×2</span></td>
+              <td>Member; not a member <span class="boolean">Boolean</span></td>
+              <td>Determines whether Part B changes the charge.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="six-route-note"><strong>Count the pieces:</strong> Part A contains two delivery routes, and each route contains three weight bands. That produces six possible basic-charge outcomes. Part B is a later two-state membership decision; it is not another weight route.</div>
+    </div>
+  </section>
+
+  <section class="case-section" id="handoff">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">03 / Follow the evidence</div>
+        <div>
+          <h2>Name the value that travels between the parts</h2>
+          <p class="lead">Part A must hand its result to Part B. We therefore need one consistently named place capable of carrying whichever charge the customer’s facts determine.</p>
+        </div>
+      </div>
+      <div class="handoff" aria-label="Part A passes the delivery charge to Part B">
+        <article class="handoff-card source">
+          <span class="part-mark">Part A</span>
+          <strong>Basic Charge Finder</strong>
+          <p>All six valid routes finish by establishing one basic charge.</p>
+        </article>
+        <div class="handoff-arrow" aria-hidden="true">››</div>
+        <article class="handoff-card value">
+          <div>
+            <span class="part-mark">The travelling value</span>
+            <code>delivery_charge</code>
+            <p>Unknown before Part A.<br>Known after Part A.</p>
+          </div>
+        </article>
+        <div class="handoff-arrow" aria-hidden="true">››</div>
+        <article class="handoff-card target">
+          <span class="part-mark">Part B</span>
+          <strong>Discount Calculator</strong>
+          <p>Receives the charge and either adjusts it or leaves it unchanged.</p>
+        </article>
+      </div>
+      <p>The variable is not six boxes for six prices. It is one labelled box. Part B does not need to know which route filled it; it only needs the value now inside.</p>
+    </div>
+  </section>
+
+  <section class="case-section" id="first-question">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">04 / Ask the first question</div>
+        <div>
+          <h2>Find the outer choice before the inner choices</h2>
+          <p class="lead">Weight appears several times in the task, but it is not the first question. Maya cannot interpret the weight until she knows which price list applies.</p>
+        </div>
+      </div>
+      <div class="investigator-question">Did the customer choose express delivery?<small>Part A’s first question · the outer choice</small></div>
+      <div class="decision-map" aria-label="Part A decision map">
+        <div class="decision-root">Did the customer choose express delivery?</div>
+        <div class="map-trunk" aria-hidden="true"></div>
+        <div class="map-branches">
+          <article class="map-branch">
+            <h3>Yes — enter the express route</h3>
+            <ol>
+              <li>Under 2 kg? Determine £8.</li>
+              <li>From 2 kg to under 10 kg? Determine £12.</li>
+              <li>10 kg or more? Determine £18.</li>
+            </ol>
+          </article>
+          <article class="map-branch">
+            <h3>No — enter the standard route</h3>
+            <ol>
+              <li>Under 2 kg? Determine £3.</li>
+              <li>From 2 kg to under 10 kg? Determine £6.</li>
+              <li>10 kg or more? Determine £9.</li>
+            </ol>
+          </article>
+        </div>
+        <div class="map-rejoin"><strong>Both routes rejoin here.</strong><br>One matching amount is now held in <code>delivery_charge</code>.</div>
+      </div>
+      <div class="outer-inner">
+        <article>
+          <span class="part-mark">Outer choice</span>
+          <h3>Select the world or rulebook</h3>
+          <p>Express or standard decides which complete price list is relevant.</p>
+        </article>
+        <article>
+          <span class="part-mark">Inner choice</span>
+          <h3>Ask the smaller question inside it</h3>
+          <p>The weight band becomes meaningful only after the correct delivery route has been opened.</p>
+        </article>
+      </div>
+      <p>This is why Part A feels larger than Part B: it genuinely contains more changing facts, more possible routes and a decision nested inside another decision.</p>
+    </div>
+  </section>
+
+  <section class="case-section" id="build-order">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">05 / Build in dependency order</div>
+        <div>
+          <h2>Finish the difficult part, then plug in the small part</h2>
+          <p class="lead">The discount applies whatever the delivery route and whatever the parcel weight. It therefore belongs after all six pricing routes have rejoined.</p>
+        </div>
+      </div>
+      <div class="build-order">
+        <article class="meat">
+          <span class="part-mark">Build first · Part A</span>
+          <h3>The meat of the project</h3>
+          <p>Build the outer delivery choice, the inner weight choices, and the dependable handoff. Do not leave Part A until every possible route establishes <code>delivery_charge</code>.</p>
+        </article>
+        <article class="plug-in">
+          <span class="part-mark">Plug in afterwards · Part B</span>
+          <h3>The finishing operation</h3>
+          <p>Ask once whether the customer is a member. Discount the carried charge or leave it alone.</p>
+        </article>
+      </div>
+      <div class="honest-note"><strong>Why not place the membership check inside every price route?</strong> Because that would repeat the same discount logic six times. Wait until the routes rejoin, then apply the decision once. That's the smart way to work, and we like working less.</div>
+      <div class="code-tip">
+        <span class="code-tip-label">Code Tip</span>
+        <p>Returning to the far-left margin in the eventual Python expresses this same idea: Part A’s whole express-or-standard investigation has finished, and the program is ready for something that applies to everyone.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section" id="silhouette">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">06 / See the silhouette</div>
+        <div>
+          <h2>Recognise the shape before writing the code</h2>
+          <p class="lead">You already understand this structure in human terms. The outline below introduces the Python decision words without filling in prices, calculations or a completed solution.</p>
+        </div>
+      </div>
+      <div class="skeleton">
+        <div class="shape-legend"><span><b>◆</b> decision</span><span><b>■</b> variable or carried value</span><span><b>▸</b> route or outcome</span></div>
+        <ul class="tree" aria-label="Non-runnable code silhouette">
+          <li><span class="node value">delivery type</span></li>
+          <li><span class="node value">parcel weight</span></li>
+          <li><span class="node value">membership</span></li>
+          <li><span class="node value">delivery_charge waits to be determined</span></li>
+          <li>
+            <span class="node decision">Part A outer if — delivery type?</span>
+            <ul>
+              <li>
+                <span class="node route">express route</span>
+                <ul>
+                  <li><span class="node decision">inner if — first weight band?</span></li>
+                  <li><span class="node decision">elif — second weight band?</span></li>
+                  <li><span class="node decision">else — remaining weight band</span></li>
+                </ul>
+              </li>
+              <li>
+                <span class="node route">outer else — standard route</span>
+                <ul>
+                  <li><span class="node decision">inner if — first weight band?</span></li>
+                  <li><span class="node decision">elif — second weight band?</span></li>
+                  <li><span class="node decision">else — remaining weight band</span></li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li><span class="node value rejoin-node">all routes rejoin with delivery_charge known</span></li>
+          <li><span class="node decision">Part B — membership question?</span></li>
+          <li><span class="node route">discount the charge or leave it unchanged</span></li>
+        </ul>
+      </div>
+      <div class="code-tip">
+        <span class="code-tip-label">Code Tip</span>
+        <p>Indentation will eventually mirror this thinking. It is not decoration: it records which question you are currently inside and which route an instruction belongs to.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="case-section" id="planning-sheet">
+    <div class="case-shell">
+      <div class="section-head">
+        <div class="step-kicker">07 / Reuse the method</div>
+        <h2>A planning sheet for the next case</h2>
+      </div>
+      <ol class="planning-sheet">
+        <li><strong>Set the scene.</strong><span>Who is doing what, why does it matter, and what final result do they need?</span></li>
+        <li><strong>Separate the major parts.</strong><span>What must be completed first, and what can be plugged in only afterwards?</span></li>
+        <li><strong>List the changing facts.</strong><span>What can vary, how many states or categories does each fact have, and what are their boundaries?</span></li>
+        <li><strong>Name the travelling value.</strong><span>What result must one part hand to the next, and what single name will carry it?</span></li>
+        <li><strong>Find Part A’s first question.</strong><span>Which outer choice selects the correct world, route or rulebook?</span></li>
+        <li><strong>Open the inner choices.</strong><span>Which smaller questions become meaningful only after the outer route is known?</span></li>
+        <li><strong>Count and rejoin the routes.</strong><span>Does every valid ending establish the same shared value?</span></li>
+        <li><strong>Plug in Part B once.</strong><span>What later operation can act on the carried value without knowing its route history?</span></li>
+        <li><strong>Look at the silhouette.</strong><span>Can you sketch the nested shape with partial terms before writing runnable syntax?</span></li>
+        <li><strong>Only then translate the plan.</strong><span>Use Python to describe a structure you already understand.</span></li>
+      </ol>
+      <blockquote class="closing-quote">The goal is not to “think in Python” immediately. The goal is to investigate clearly enough that Python has something orderly to describe.<small>Case closed—for now&nbsp;&nbsp;😂</small></blockquote>
+    </div>
+  </section>
+</main>
+
+<footer class="case-footer">
+  <div class="case-shell footer-grid">
+    <div class="footer-copy">
+      <span class="part-mark">Beginner’s Programming Field Guide</span>
+      <p>Putting It All Together Like Columbo Would · Scene → Clues → First Question → Outer Choice → Inner Choice → Shared Value → Next Part</p>
+      <p>This independent companion guide supports learning alongside Code Institute study. It is not official Code Institute material.</p>
+    </div>
+    <a class="tidyweb-mark" href="https://github.com/TidyWeb/" target="_blank" rel="noopener">
+      <img src="assets/putting-it-all-together/tidyweb_logo.png" alt="TidyWeb logo" width="44" height="44">
+      <span>© 2026 TidyWeb<br>GitHub</span>
+    </a>
+  </div>
+</footer>
+</body>
+</html>
