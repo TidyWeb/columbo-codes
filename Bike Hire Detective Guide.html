@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A beginner's detective guide to planning multipart Python decisions before writing code.">
   <title>The Riverside Bike Hire Case — A Detective's Method</title>
-  <link rel="stylesheet" href="assets/bike-hire-detective-guide/styles.css?v=20260717-173959">
+  <link rel="stylesheet" href="assets/bike-hire-detective-guide/styles.css?v=20260719-184233">
 </head>
 <body>
 <header class="hero">
@@ -230,6 +230,23 @@
       </div>
 
       <p class="handoff-explanation">The loyalty decision does not need to remember whether rain or a holiday produced the normal price. It only needs the eligible value now held in <code>hire_price</code>. The child route is different because the brief explicitly closes that route at €5.</p>
+    </div>
+  </section>
+
+  <section class="flowchart-interlude" aria-labelledby="decision-flowchart-caption">
+    <div class="shell">
+      <figure class="decision-flowchart">
+        <div class="decision-flowchart-scroll" tabindex="0" aria-label="Scrollable Riverside Bike Hire decision flowchart">
+          <img
+            src="assets/bike-hire-detective-guide/riverside-bike-hire-decision-flowchart.png"
+            alt="A top-to-bottom bike-hire pricing flowchart. The child-bike override sets five euros and bypasses normal pricing and the Loyalty Card. Adult routes check public holiday before rain, establish a normal hire price, then apply or skip the Loyalty Card discount before presenting the final hire price."
+          >
+        </div>
+        <figcaption id="decision-flowchart-caption">
+          <strong>The complete case, in precedence order.</strong>
+          <span>The dotted override route shows why a child’s bike never enters normal pricing or the Loyalty Card decision.</span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 

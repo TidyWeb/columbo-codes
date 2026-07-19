@@ -131,6 +131,12 @@ td:first-child{color:var(--blue)}
 .value-box{border-top:5px solid var(--blue)!important}
 .final-box{border-top:5px solid var(--gold)!important}
 .handoff-explanation{max-width:920px;margin:29px auto 0;color:var(--muted);font-size:1.1rem}
+.flowchart-interlude{padding:0 0 86px;border-bottom:1px solid var(--line)}
+.decision-flowchart{margin:0}
+.decision-flowchart-scroll{overflow:visible;border:1px solid var(--line);background:#f6f0e4;box-shadow:var(--shadow)}
+.decision-flowchart img{display:block;width:100%;height:auto}
+.decision-flowchart figcaption{display:grid;grid-template-columns:minmax(250px,.72fr) minmax(0,1.28fr);gap:28px;padding:18px 22px;border:1px solid var(--line);border-top:0;background:var(--panel);color:var(--muted);font-size:.94rem;line-height:1.55}
+.decision-flowchart figcaption strong{color:var(--blue)}
 code{padding:.12em .3em;background:#e7e4dd;font-family:var(--mono);font-size:.88em}
 .skeleton{padding:34px;border:1px solid var(--line);background:var(--panel)}
 .legend{display:flex;flex-wrap:wrap;gap:19px;margin-bottom:28px;color:var(--muted);font-size:.66rem}
@@ -173,10 +179,14 @@ code{padding:.12em .3em;background:#e7e4dd;font-family:var(--mono);font-size:.88
   .chain-steps article:last-child{border-bottom:0}
   .planning-sheet li{grid-template-columns:1fr;gap:6px}
   .footer-grid{grid-template-columns:1fr;align-items:start}
+  .decision-flowchart-scroll{overflow-x:auto;scrollbar-color:var(--gold) #e4ded2;scrollbar-width:thin}
+  .decision-flowchart-scroll:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+  .decision-flowchart img{width:760px;max-width:none}
+  .decision-flowchart figcaption{grid-template-columns:1fr;gap:7px}
 }
 @media(max-width:480px){
   .shell{width:min(100% - 28px,1120px)}h1{font-size:3.45rem}
-  .hero-copy{padding-top:160px}.section{padding:64px 0}
+  .hero-copy{padding-top:160px}.section{padding:64px 0}.flowchart-interlude{padding-bottom:64px}
   .message,.role-card,.skeleton{padding:23px}
   .overview-head,.chain-demo,.case-application{padding:24px}
   .process-compare article,.precision-note{padding:23px}
