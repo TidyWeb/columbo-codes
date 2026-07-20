@@ -313,6 +313,21 @@ strong { font-weight:600; }
 }
 .two-part h3 { margin:0 0 12px; }
 .two-part p { margin:0; font-size:15.5px; line-height:1.65; }
+.discount-rate {
+  color:var(--orange);
+  font-weight:700;
+}
+.honest-note strong {
+  display:block;
+  margin-bottom:10px;
+}
+.honest-note ul {
+  margin:0;
+  padding-left:22px;
+}
+.honest-note li + li {
+  margin-top:8px;
+}
 .rule {
   margin:30px 0;
   padding:20px 24px;
@@ -430,11 +445,11 @@ footer {
       </div>
       <div class="scene">
         <div class="story-panel" aria-label="Parcel delivery story">
-          <p>Maya runs the counter at a neighbourhood parcel shop.</p>
-          <p>Customers choose either standard delivery or express delivery.</p>
-          <p>The parcel’s weight determines the charge within that service.</p>
-          <p>Rewards members receive a discount after the basic charge has been found.</p>
-          <p>Maya needs one final amount to appear on the till.</p>
+          <p>Maya runs the counter at the local parcel shop.</p>
+          <p>She offers two levels of service — express or standard.</p>
+          <p>Each service has different charges depending on parcel weight.</p>
+          <p>Reward card members get a <span class="discount-rate">15% discount</span> on all postage fees.</p>
+          <p>Maya needs one final amount to show on her till.</p>
         </div>
         <aside class="case-note">
           <strong>The program is simply a careful version of Maya’s thought process.</strong>
@@ -457,7 +472,13 @@ footer {
           <p>Members receive 15% off. Everyone else keeps the basic charge unchanged.</p>
         </article>
       </div>
-      <div class="honest-note"><strong>Let’s be honest about the workload:</strong> Part A is the meat of the project. Part B is a smaller finishing operation once Part A reliably hands it one basic charge.</div>
+      <div class="honest-note">
+        <strong>Let’s be honest about the workload:</strong>
+        <ul>
+          <li>Part A is the meat of the project.</li>
+          <li>Part B is a smaller finishing operation once Part A reliably hands it one basic charge.</li>
+        </ul>
+      </div>
     </div>
   </section>
 
