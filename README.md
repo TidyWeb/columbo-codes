@@ -1,5 +1,5 @@
 # Columbo Codes
 
-## [🌐 Open the live site: https://tidyweb.github.io/columbo-codes/ ↗](https://tidyweb.github.io/columbo-codes/)
+### [Visit the live site ↗](https://tidyweb.github.io/columbo-codes/)
 
 A beginner-friendly Python casebook about planning multi-part problems and arranging rules before writing code.
